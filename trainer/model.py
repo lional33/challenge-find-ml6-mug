@@ -12,17 +12,18 @@ def get_batch_size():
     """Returns the batch size that will be used by your solution.
     It is recommended to change this value.
     """
-    return 1
+    return 64
 
 def get_epochs():
     """Returns number of epochs that will be used by your solution.
     It is recommended to change this value.
     """
-    return 1
+    return 25
 
 def solution(input_layer):
-    """Returns a compiled model.
 
+    """Returns a compiled model.
+    
     This function is expected to return a model to identity the different mugs.
     The model's outputs are expected to be probabilities for the classes and
     and it should be ready for training.
@@ -37,9 +38,21 @@ def solution(input_layer):
     Returns:
         model: A compiled model
     """
+    base_model = tf.keras.applications.MobileNetV2(input_shape=[64, 64, 3],
+                                                   include_top=False,
+                                                   weights='imagenet')
+    base_model.trainable = False
 
     # TODO: Code of your solution
-    model = None
-
+    model = tf.keras.Sequential([
+            base_model,
+            tf.keras.layers.GlobalAveragePooling2D(),
+            tf.keras.layers.Dense(4,activation='softmax')
+            ])
+    model.compile(
+        optimizer='adam',
+        loss='sparse_categorical_crossentropy',
+        metrics=['sparse_categorical_accuracy'],
+    )
     # TODO: Return the compiled model
     return model

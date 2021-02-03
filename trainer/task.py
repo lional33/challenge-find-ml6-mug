@@ -13,8 +13,8 @@ import logging
 
 import tensorflow as tf
 
-import trainer.data as data
-import trainer.model as model
+from trainer import data as data
+from trainer import model as model
 
 
 def train_model(params):
@@ -38,8 +38,11 @@ def train_model(params):
     else:
         ml_model.fit(train_data, train_labels,
                      batch_size=model.get_batch_size(),
-                     epochs=model.get_epochs())
+                     epochs=model.get_epochs(),
+                     validation_data=(eval_data, eval_labels))
+
         ml_model.evaluate(eval_data, eval_labels, verbose=1)
+        print(ml_model.history)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
