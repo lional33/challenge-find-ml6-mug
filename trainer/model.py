@@ -46,7 +46,8 @@ def solution(input_layer):
     # TODO: Code of your solution
     model = tf.keras.Sequential([
             base_model,
-            tf.keras.layers.GlobalAveragePooling2D(),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(32,activation='relu'),
             tf.keras.layers.Dense(4,activation='softmax')
             ])
     model.compile(
